@@ -192,5 +192,8 @@
 
 
 /**************************************************************************/	
+			qcom,ulps-enabled;
+			qcom,suspend-ulps-enabled;
+			qcom,panel-allow-phy-poweroff;
 	};
 };
