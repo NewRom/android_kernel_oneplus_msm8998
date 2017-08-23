@@ -14,6 +14,7 @@
 #ifndef _NVME_H
 #define _NVME_H
 
+#include <linux/mutex.h>
 #include <linux/nvme.h>
 #include <linux/pci.h>
 #include <linux/kref.h>
@@ -55,6 +56,7 @@ struct nvme_dev {
 	struct work_struct reset_work;
 	struct work_struct probe_work;
 	struct work_struct scan_work;
+	struct mutex shutdown_lock;
 	char name[12];
 	char serial[20];
 	char model[40];

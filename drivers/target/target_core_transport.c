@@ -425,7 +425,18 @@ static void target_complete_nacl(struct kref *kref)
 	struct se_node_acl *nacl = container_of(kref,
 				struct se_node_acl, acl_kref);
 
-	complete(&nacl->acl_free_comp);
+	if (!nacl->dynamic_stop) {
+		complete(&nacl->acl_free_comp);
+		return;
+	}
+
+	mutex_lock(&se_tpg->acl_node_mutex);
+	list_del_init(&nacl->acl_list);
+	mutex_unlock(&se_tpg->acl_node_mutex);
+
+	core_tpg_wait_for_nacl_pr_ref(nacl);
+	core_free_device_list_for_node(nacl, se_tpg);
+	kfree(nacl);
 }
 
 void target_put_nacl(struct se_node_acl *nacl)
@@ -464,6 +475,42 @@ EXPORT_SYMBOL(transport_deregister_session_configfs);
 
 void transport_free_session(struct se_session *se_sess)
 {
+	struct se_node_acl *se_nacl = se_sess->se_node_acl;
+
+	/*
+	 * Drop the se_node_acl->nacl_kref obtained from within
+	 * core_tpg_get_initiator_node_acl().
+	 */
+	if (se_nacl) {
+		struct se_portal_group *se_tpg = se_nacl->se_tpg;
+		const struct target_core_fabric_ops *se_tfo = se_tpg->se_tpg_tfo;
+		unsigned long flags;
+
+		se_sess->se_node_acl = NULL;
+
+		/*
+		 * Also determine if we need to drop the extra ->cmd_kref if
+		 * it had been previously dynamically generated, and
+		 * the endpoint is not caching dynamic ACLs.
+		 */
+		mutex_lock(&se_tpg->acl_node_mutex);
+		if (se_nacl->dynamic_node_acl &&
+		    !se_tfo->tpg_check_demo_mode_cache(se_tpg)) {
+			spin_lock_irqsave(&se_nacl->nacl_sess_lock, flags);
+			if (list_empty(&se_nacl->acl_sess_list))
+				se_nacl->dynamic_stop = true;
+			spin_unlock_irqrestore(&se_nacl->nacl_sess_lock, flags);
+
+			if (se_nacl->dynamic_stop)
+				list_del_init(&se_nacl->acl_list);
+		}
+		mutex_unlock(&se_tpg->acl_node_mutex);
+
+		if (se_nacl->dynamic_stop)
+			target_put_nacl(se_nacl);
+
+		target_put_nacl(se_nacl);
+	}
 	if (se_sess->sess_cmd_map) {
 		percpu_ida_destroy(&se_sess->sess_tag_pool);
 		kvfree(se_sess->sess_cmd_map);
@@ -702,6 +749,15 @@ void target_complete_cmd(struct se_cmd *cmd, u8 scsi_status)
 	if (cmd->transport_state & CMD_T_ABORTED ||
 	    cmd->transport_state & CMD_T_STOP) {
 		spin_unlock_irqrestore(&cmd->t_state_lock, flags);
+		/*
+		 * If COMPARE_AND_WRITE was stopped by __transport_wait_for_tasks(),
+		 * release se_device->caw_sem obtained by sbc_compare_and_write()
+		 * since target_complete_ok_work() or target_complete_failure_work()
+		 * won't be called to invoke the normal CAW completion callbacks.
+		 */
+		if (cmd->se_cmd_flags & SCF_COMPARE_AND_WRITE) {
+			up(&dev->caw_sem);
+		}
 		complete_all(&cmd->t_transport_stop_comp);
 		return;
 	} else if (!success) {
@@ -1922,6 +1978,8 @@ static void target_restart_delayed_cmds(struct se_device *dev)
 		list_del(&cmd->se_delayed_node);
 		spin_unlock(&dev->delayed_cmd_lock);
 
+		cmd->transport_state |= CMD_T_SENT;
+
 		__target_execute_cmd(cmd, true);
 
 		if (cmd->sam_task_attr == TCM_ORDERED_TAG)
@@ -1959,6 +2017,8 @@ static void transport_complete_task_attr(struct se_cmd *cmd)
 		pr_debug("Incremented dev_cur_ordered_id: %u for ORDERED\n",
 			 dev->dev_cur_ordered_id);
 	}
+	cmd->se_cmd_flags &= ~SCF_TASK_ATTR_SET;
+
 restart:
 	target_restart_delayed_cmds(dev);
 }
