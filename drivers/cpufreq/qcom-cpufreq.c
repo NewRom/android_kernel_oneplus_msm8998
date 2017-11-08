@@ -684,7 +684,7 @@ static int c0_cpufreq_qos_handler(struct notifier_block *b,
 	}
 
 	ret = get_c0_available_cpufreq();
-	if (!ret) {
+	if (ret < 0) {
 		cpufreq_cpu_put(policy);
 		return NOTIFY_BAD;
 	}
@@ -728,7 +728,7 @@ static int c1_cpufreq_qos_handler(struct notifier_block *b,
 	}
 
 	ret = get_c1_available_cpufreq();
-	if (ret) {
+	if (ret < 0) {
 	cpufreq_cpu_put(policy);
 		return NOTIFY_BAD;
 	}
