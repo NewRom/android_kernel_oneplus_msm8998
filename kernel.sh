@@ -59,6 +59,7 @@ function make_kernel {
 function make_modules {
 		rm `echo $MODULES_DIR"/*"`
 		find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
+		cp ${HOME}/new/wifi/* -rf $MODULES_DIR
 }
 
 function make_dtb {
