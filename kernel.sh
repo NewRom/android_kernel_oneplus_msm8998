@@ -36,7 +36,7 @@ REPACK_DIR="${HOME}/new/anykernel"
 PATCH_DIR="${HOME}/new/anykernel"
 MODULES_DIR="${HOME}/new/anykernel/modules"
 ZIP_MOVE="${HOME}/new/out"
-ZIMAGE_DIR="${HOME}/op5t/out/arch/arm64/boot"
+ZIMAGE_DIR="${HOME}/op5/out/arch/arm64/boot"
 
 # Functions
 function clean_all {
@@ -63,7 +63,7 @@ function make_modules {
 }
 
 function make_dtb {
-		/home/jorge/new/anykernel/tools/dtbToolCM -2 -o /home/jorge/new/anykernel/dtb -s 2048 -p /home/jorge/op5t/scripts/dtc/ /home/jorge/op5t/arch/arm/boot/
+		/home/jorge/new/anykernel/tools/dtbToolCM -2 -o /home/jorge/new/anykernel/dtb -s 2048 -p /home/jorge/op5/scripts/dtc/ /home/jorge/op5/arch/arm/boot/
 }
 
 function make_zip {
@@ -134,5 +134,5 @@ DATE_END=$(date +"%s")
 DIFF=$(($DATE_END - $DATE_START))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo
-mv ~/new/out/newKernel-CM12-.zip ~/files/oneplus5/kernel/newKernel-OOS-1.00.zip
+mv ~/new/out/newKernel-CM12-.zip ~/files/oneplus5t/kernel/newKernel-OOS-1.03.zip
 #/etc/script/md5.sh
