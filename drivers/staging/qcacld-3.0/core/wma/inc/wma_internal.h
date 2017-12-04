@@ -1104,12 +1104,12 @@ QDF_STATUS wma_enable_arp_ns_offload(tp_wma_handle wma,
 /**
  * wma_conf_hw_filter_mode() - configure hw filter to the given mode
  * @wma: wma handle
- * @req: hardware filter request parameters
+ * @req: hardware filter request
  *
  * Return: QDF_STATUS
  */
 QDF_STATUS wma_conf_hw_filter_mode(tp_wma_handle wma,
-				   struct wmi_hw_filter_req_params *req);
+				   struct hw_filter_request *req);
 
 QDF_STATUS wma_process_cesium_enable_ind(tp_wma_handle wma);
 

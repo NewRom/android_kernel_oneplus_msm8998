@@ -6060,6 +6060,7 @@ skip_vht:
 	lim_send_chan_switch_action_frame(mac_ctx,
 		session_entry->gLimChannelSwitch.primaryChannel,
 		ch_offset, session_entry);
+	session_entry->gLimChannelSwitch.switchCount--;
 }
 
 /**
