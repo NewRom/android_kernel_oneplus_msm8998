@@ -134,5 +134,5 @@ DATE_END=$(date +"%s")
 DIFF=$(($DATE_END - $DATE_START))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo
-mv ~/new/out/newKernel-CM12-.zip ~/files/oneplus5t/kernel/newKernel-OOS-1.03.zip
+mv ~/new/out/newKernel-CM12-.zip ~/files/oneplus5t/kernel/newKernel-OOS-1.05.zip
 #/etc/script/md5.sh
