@@ -40,7 +40,7 @@
 #include <asm/fb.h>
 
 #if defined(CONFIG_ARCH_MSM8998)
-#define LCDSPEEDUP_BIG_CPU_QOS_FREQ    2361600
+#define LCDSPEEDUP_BIG_CPU_QOS_FREQ    2457600
 #elif defined(CONFIG_ARCH_MSM8996)
 #define LCDSPEEDUP_BIG_CPU_QOS_FREQ    2073600
 #endif
