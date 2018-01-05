@@ -34,7 +34,7 @@ export KBUILD_BUILD_HOST=kernel
 KERNEL_DIR=`pwd`
 REPACK_DIR="${HOME}/new/anykernel"
 PATCH_DIR="${HOME}/new/anykernel"
-MODULES_DIR="${HOME}/new/anykernel/modules"
+MODULES_DIR="${HOME}/new/anykernel/modules/system/lib/modules/"
 ZIP_MOVE="${HOME}/new/out"
 ZIMAGE_DIR="${HOME}/op5/out/arch/arm64/boot"
 
@@ -61,13 +61,12 @@ function make_modules {
 		find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
 }
 
-function make_dtb {
-		/home/jorge/new/anykernel/tools/dtbToolCM -2 -o /home/jorge/new/anykernel/dtb -s 2048 -p /home/jorge/op5/scripts/dtc/ /home/jorge/op5/arch/arm/boot/
-}
+#function make_dtb {
+#		/home/jorge/new/anykernel/tools/dtbToolCM -2 -o /home/jorge/new/anykernel/dtb -s 2048 -p /home/jorge/op5/scripts/dtc/ /home/jorge/op5/arch/arm64/boot/
+#}
 
 function make_zip {
 		cd $REPACK_DIR
-		mv Image.gz-dtb zImage
 		zip -r9 newKernel-CM12-"$VARIANT".zip *
 		mv newKernel-CM12-"$VARIANT".zip $ZIP_MOVE
 		cd $KERNEL_DIR
@@ -107,7 +106,7 @@ do
 case "$dchoice" in
 	y|Y)
 		make_kernel
-		make_dtb
+#		make_dtb
 		make_modules
 		make_zip
 		break
