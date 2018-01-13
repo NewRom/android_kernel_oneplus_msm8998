@@ -34,7 +34,8 @@ export KBUILD_BUILD_HOST=kernel
 KERNEL_DIR=`pwd`
 REPACK_DIR="${HOME}/new/anykernel"
 PATCH_DIR="${HOME}/new/anykernel"
-MODULES_DIR="${HOME}/new/anykernel/modules/system/lib/modules/"
+MODULES_DIR="${HOME}/new/anykernel/modules/system/lib/modules"
+MODULES_DIR_V="${HOME}/new/anykernel/modules/system/vendor/lib/modules"
 ZIP_MOVE="${HOME}/new/out"
 ZIMAGE_DIR="${HOME}/op5/out/arch/arm64/boot"
 
@@ -59,6 +60,13 @@ function make_kernel {
 function make_modules {
 		rm `echo $MODULES_DIR"/*"`
 		find $KERNEL_DIR -name '*.ko' -exec cp -v {} $MODULES_DIR \;
+#                mkdir ${HOME}/new/anykernel/modules/system/vendor
+#                mkdir ${HOME}/new/anykernel/modules/system/vendor/lib
+#                mkdir ${HOME}/new/anykernel/modules/system/vendor/lib/modules
+#                find $KERNEL_DIR -name 'wlan.ko' -exec cp -v {} $MODULES_DIR_V \;
+#                mv ${HOME}/new/anykernel/modules/system/vendor/lib/modules/wlan.ko ${HOME}/new/anykernel/modules/system/vendor/lib/modules/qca_cld3_wlan.ko
+#                find $KERNEL_DIR -name 'msm_11ad_proxy.ko' -exec cp -v {} $MODULES_DIR_V \;
+#                find $KERNEL_DIR -name 'wil6210.ko' -exec cp -v {} $MODULES_DIR_V \;
 }
 
 #function make_dtb {
@@ -125,7 +133,7 @@ done
 echo -e "${green}"
 echo "-------------------"
 echo "Build Completed in:"
-oecho "-------------------"
+echo "-------------------"
 echo -e "${restore}"
 
 DATE_END=$(date +"%s")
