@@ -2942,7 +2942,7 @@ static void bfq_init_prio_data(struct bfq_queue *bfqq, struct bfq_io_cq *bic)
 	ioprio_class = IOPRIO_PRIO_CLASS(bic->ioprio);
 	switch (ioprio_class) {
 	default:
-		dev_err(bfqq->bfqd->queue->backing_dev_info->dev,
+		dev_err(bfqq->bfqd->queue->backing_dev_info.dev,
 			"bfq: bad prio class %d\n", ioprio_class);
 	case IOPRIO_CLASS_NONE:
 		/*
