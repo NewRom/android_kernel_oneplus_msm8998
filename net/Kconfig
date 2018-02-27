@@ -411,6 +411,9 @@ config LWTUNNEL
 	  with light weight tunnel state associated with fib routes.
 
 source "net/ipc_router/Kconfig"
+config DST_CACHE
+	bool
+	default n
 
 endif   # if NET
 
