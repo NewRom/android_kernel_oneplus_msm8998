@@ -23,8 +23,8 @@ AK_VER="$BASE_AK_VER$VER"
 
 # Vars
 
-#export CROSS_COMPILE=${HOME}/uber/out/aarch64-linux-android-4.9-kernel/bin/aarch64-linux-android-
-export CROSS_COMPILE=${HOME}/los151/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
+export CROSS_COMPILE=${HOME}/uber/out/aarch64-linux-android-4.9-kernel/bin/aarch64-linux-android-
+#export CROSS_COMPILE=${HOME}/los151/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export ARCH=arm64
 export SUBARCH=arm64
 export KBUILD_BUILD_USER=jgcaap
@@ -140,5 +140,5 @@ DATE_END=$(date +"%s")
 DIFF=$(($DATE_END - $DATE_START))
 echo "Time: $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) seconds."
 echo
-mv ~/new/out/newKernel-CM12-.zip ~/files/oneplus5t/kernel/beta/newKernel-OOS-1.09-O.zip
+#mv ~/new/out/newKernel-CM12-.zip ~/files/oneplus5t/kernel/newKernel-OOS-1.25-O.zip
 #/etc/script/md5.sh
