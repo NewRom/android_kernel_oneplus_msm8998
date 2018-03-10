@@ -442,8 +442,12 @@ asmlinkage void __exception do_undefinstr(struct pt_regs *regs)
 
 static void cntvct_read_handler(unsigned int esr, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	int rt = (esr & ESR_ELx_SYS64_ISS_RT_MASK)
 			>> ESR_ELx_SYS64_ISS_RT_SHIFT;
+=======
+	int rt = (esr & ESR_ELx_SYS64_ISS_RT_MASK) >> ESR_ELx_SYS64_ISS_RT_SHIFT;
+>>>>>>> 992ed5976ff3c9af1a3231672c14a086025b789f
 
 	isb();
 	if (rt != 31)
@@ -453,14 +457,19 @@ static void cntvct_read_handler(unsigned int esr, struct pt_regs *regs)
 
 static void cntfrq_read_handler(unsigned int esr, struct pt_regs *regs)
 {
+<<<<<<< HEAD
 	int rt = (esr & ESR_ELx_SYS64_ISS_RT_MASK)
 			>> ESR_ELx_SYS64_ISS_RT_SHIFT;
+=======
+	int rt = (esr & ESR_ELx_SYS64_ISS_RT_MASK) >> ESR_ELx_SYS64_ISS_RT_SHIFT;
+>>>>>>> 992ed5976ff3c9af1a3231672c14a086025b789f
 
 	if (rt != 31)
 		regs->regs[rt] = read_sysreg(cntfrq_el0);
 	regs->pc += 4;
 }
 
+<<<<<<< HEAD
 static void cntpct_read_handler(unsigned int esr, struct pt_regs *regs)
 {
 	int rt = (esr & ESR_ELx_SYS64_ISS_RT_MASK)
@@ -486,6 +495,16 @@ asmlinkage void __exception do_sysinstr(unsigned int esr, struct pt_regs *regs)
 			== ESR_ELx_SYS64_ISS_SYS_CNTPCT) {
 		cntpct_read_handler(esr, regs);
 		return;
+=======
+asmlinkage void __exception do_sysinstr(unsigned int esr, struct pt_regs *regs)
+{
+	if ((esr & ESR_ELx_SYS64_ISS_SYS_OP_MASK) == ESR_ELx_SYS64_ISS_SYS_CNTVCT) {
+		cntvct_read_handler(esr, regs);
+		return;
+	} else if ((esr & ESR_ELx_SYS64_ISS_SYS_OP_MASK) == ESR_ELx_SYS64_ISS_SYS_CNTFRQ) {
+		cntfrq_read_handler(esr, regs);
+		return;
+>>>>>>> 992ed5976ff3c9af1a3231672c14a086025b789f
 	}
 
 	do_undefinstr(regs);
