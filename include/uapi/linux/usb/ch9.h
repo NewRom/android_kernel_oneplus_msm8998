@@ -921,6 +921,24 @@ struct usb_config_summary_descriptor {
 	struct function_class_info cs_info[];
 } __attribute__((packed));
 
+
+/*
+ * Precision time measurement capability descriptor: advertised by devices and
+ * hubs that support PTM
+ */
+#define	USB_PTM_CAP_TYPE	0xb
+struct usb_ptm_cap_descriptor {
+	__u8  bLength;
+	__u8  bDescriptorType;
+	__u8  bDevCapabilityType;
+} __attribute__((packed));
+
+/*
+ * The size of the descriptor for the Sublink Speed Attribute Count
+ * (SSAC) specified in bmAttributes[4:0].
+ */
+#define USB_DT_USB_SSP_CAP_SIZE(ssac)	(16 + ssac * 4)
+
 /*-------------------------------------------------------------------------*/
 
 /* USB_DT_WIRELESS_ENDPOINT_COMP:  companion descriptor associated with
