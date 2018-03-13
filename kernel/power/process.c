@@ -20,7 +20,10 @@
 #include <trace/events/power.h>
 #include <linux/wakeup_reason.h>
 #include <linux/cpufreq.h>
-/* 
+#include <linux/cpuset.h>
+
+/*
+>>>>>>> 5c502e68f89bc43475ea32cd40e07e395dbfdf4f
  * Timeout for stopping processes
  */
 unsigned int __read_mostly freeze_timeout_msecs = 20 * MSEC_PER_SEC;
@@ -233,6 +236,8 @@ void thaw_processes(void)
 
 	__usermodehelper_set_disable_depth(UMH_FREEZING);
 	thaw_workqueues();
+
+	cpuset_wait_for_hotplug();
 
 	read_lock(&tasklist_lock);
 	for_each_process_thread(g, p) {
