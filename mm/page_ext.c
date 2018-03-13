@@ -115,7 +115,6 @@ struct page_ext *lookup_page_ext(struct page *page)
 	 */
 	if (unlikely(!base))
 		return NULL;
-#endif
 	offset = pfn - round_down(node_start_pfn(page_to_nid(page)),
 					MAX_ORDER_NR_PAGES);
 	return base + offset;
@@ -192,7 +191,6 @@ struct page_ext *lookup_page_ext(struct page *page)
 	 */
 	if (!section->page_ext)
 		return NULL;
-#endif
 	return section->page_ext + pfn;
 }
 
