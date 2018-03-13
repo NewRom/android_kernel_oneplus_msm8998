@@ -59,6 +59,7 @@
 #include <linux/tsacct_kern.h>
 #include <linux/cn_proc.h>
 #include <linux/freezer.h>
+#include <linux/kaiser.h>
 #include <linux/delayacct.h>
 #include <linux/taskstats_kern.h>
 #include <linux/random.h>
@@ -356,6 +357,10 @@ static struct task_struct *dup_task_struct(struct task_struct *orig, int node)
 	tsk->flags &= ~PF_SU;
 
 	tsk->stack = ti;
+
+	err = kaiser_map_thread_stack(tsk->stack);
+	if (err)
+		goto free_ti;
 #ifdef CONFIG_SECCOMP
 	/*
 	 * We must handle setting up seccomp filters once we're under
