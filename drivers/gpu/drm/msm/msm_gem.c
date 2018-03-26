@@ -293,13 +293,6 @@ static void put_pages(struct drm_gem_object *obj)
 			msm_obj->flags &= ~MSM_BO_LOCKED;
 		}
 
-		/* For non-cached buffers, ensure the new pages are clean
-		 * because display controller, GPU, etc. are not coherent:
-		 */
-		if (msm_obj->flags & (MSM_BO_WC|MSM_BO_UNCACHED))
-			dma_unmap_sg(obj->dev->dev, msm_obj->sgt->sgl,
-					msm_obj->sgt->nents, DMA_BIDIRECTIONAL);
-
 		if (msm_obj->sgt)
 			sg_free_table(msm_obj->sgt);
 
