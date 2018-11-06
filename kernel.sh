@@ -23,7 +23,7 @@ AK_VER="$BASE_AK_VER$VER"
 
 # Vars
 
-export CROSS_COMPILE=${HOME}/uber/out/aarch64-linux-android-4.9-kernel/bin/aarch64-linux-android-
+export CROSS_COMPILE=${HOME}/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 #export CROSS_COMPILE=${HOME}/los151/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export ARCH=arm64
 export SUBARCH=arm64
