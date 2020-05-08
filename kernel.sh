@@ -12,7 +12,7 @@ clear
 THREAD="-j$(grep -c ^processor /proc/cpuinfo)"
 KERNEL="Image.gz-dtb"
 # DTBIMAGE="dtb"
-DEFCONFIG="msmcortex-perf_defconfig"
+DEFCONFIG="new_defconfig"
 #"msmcortex_defconfig"
 #"msmcortex-perf_defconfig"
 
@@ -34,7 +34,7 @@ export KBUILD_BUILD_HOST=kernel
 KERNEL_DIR=`pwd`
 REPACK_DIR="${HOME}/oneplus/anykernel"
 PATCH_DIR="${HOME}/oneplus/anykernel"
-MODULES_DIR="${HOME}/oneplus/anykernel/modules"
+MODULES_DIR="${HOME}/oneplus/anykernel/modules/system/lib/modules"
 ZIP_MOVE="${HOME}/oneplus/out"
 ZIMAGE_DIR="${HOME}/oneplus/kernel/out/arch/arm64/boot"
 
